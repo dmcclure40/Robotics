@@ -1,9 +1,9 @@
 #include <sparki.h>
   
-  int xI = 0;
-  int yI = 0;
-  int tI = 0;
-  int tnot = 0;
+  float xI = 0;
+  float yI = 0;
+  float tI = 0;
+  float tnot = 0;
 
 
 void setup() {
@@ -16,14 +16,14 @@ void loop() {
   // put your main code here, to run repeatedly:
   unsigned long timeStart = millis();
   
-  int xR = 0;
-  int tR = 0;
-  int dim = 0.085; //        m
-  int speed = 0.02717; //    m/s
-  int threshold = 500;
-  int xItemp = 0;
-  int yItemp = 0;
-  int tItemp = 0;
+  float xR = 0;
+  float tR = 0;
+  float dim = 0.085; //        m
+  float speed = 0.02717; //    m/s
+  float threshold = 500;
+  float xItemp = 0;
+  float yItemp = 0;
+  float tItemp = 0;
   
  
   int lineLeft   = sparki.lineLeft();   // measure the left IR sensor
@@ -66,7 +66,7 @@ void loop() {
  
   sparki.updateLCD(); // display all of the information written to the screen
   */
-  int dt = 0.1; //seconds
+  float dt = 0.1; //seconds
 
   xItemp = xI + cos(tnot)*xR*dt;
   yItemp = yI + sin(tnot)*xR*dt;
