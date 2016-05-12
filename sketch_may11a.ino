@@ -18,9 +18,9 @@ void loop() {
   
   float xR = 0;
   float tR = 0;
-  float dim = 0.085; //        m
-  float speed = 0.02717; //    m/s
-  float threshold = 500;
+  float dim = .085; //        m
+  float speed = .02717; //    m/s
+  int threshold = 500;
   float xItemp = 0;
   float yItemp = 0;
   float tItemp = 0;
@@ -34,7 +34,7 @@ void loop() {
   {  
     sparki.moveLeft(); // turn left
     xR = speed/2;
-    tR = -speed/dim;
+    tR = -1*(speed/dim);
   }
  
   if ( lineRight < threshold ) // if line is below right line sensor
@@ -68,8 +68,8 @@ void loop() {
   */
   float dt = 0.1; //seconds
 
-  xItemp = xI + cos(tnot)*xR*dt;
-  yItemp = yI + sin(tnot)*xR*dt;
+  xItemp = xI + cos(tItemp)*xR*dt; //cm
+  yItemp = yI + sin(tItemp)*xR*dt; //cm
   tItemp = tI + tR*dt;
 
   xI = xItemp;
@@ -81,18 +81,18 @@ void loop() {
   //yI = yI + sin(tnot)*xR*dt;
   //tI = tI + tR*dt;
   
-  tnot = atan(yItemp/xItemp);
+  //tnot = atan2(yItemp, xItemp);
 
   sparki.clearLCD(); // wipe the screen
  
   sparki.print("xI: "); // show left line sensor on screen
-  sparki.println(xItemp);
+  sparki.println(xI, 4);
  
   sparki.print("yI: "); // show center line sensor on screen
-  sparki.println(yItemp);
+  sparki.println(yI, 4);
  
-  sparki.print("thetaI: "); // show right line sensor on screen
-  sparki.println(tItemp);
+  sparki.print("thetaI(deg): "); // show right line sensor on screen
+  sparki.println(tItemp*(180/3.14), 4);
  
   sparki.updateLCD();
 
