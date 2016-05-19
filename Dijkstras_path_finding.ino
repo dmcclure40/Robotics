@@ -3,13 +3,16 @@
 #include <limits.h>
 #include <stdbool.h>
 
-#define V 9 // number of nodes
+#define V 16 // number of nodes
 
 // Setup for defining the coordinates of the graph. Not needed in this case
+/*
 int len = 60;
 int wid = 32;
 int array_x[16];
 int array_y[16];
+*/
+int adjacency_mat[16][16];
 
 // Store the shorests paths for each node of the graph
 int path_final[V][V];
@@ -117,7 +120,7 @@ void move_sparki(int goal) {
    
     //move to -> path_final[goal][i]
     // Go up
-    if (current_node - path_final[goal][i] == -3) { //Change to (-4) if 4X4
+    if (current_node - path_final[goal][i] == -4) { //Change to (-4) if 4X4
       sparki.moveLeft(90);
       delay(50);
       sparki.moveForward(10);
@@ -127,7 +130,7 @@ void move_sparki(int goal) {
     }
 
     // Go down
-    if (current_node - path_final[goal][i] == 3) { //Change to (4) if 4X4
+    if (current_node - path_final[goal][i] == 4) { //Change to (4) if 4X4
       sparki.moveRight(90);
       delay(50);
       sparki.moveForward(10);
@@ -156,9 +159,49 @@ void move_sparki(int goal) {
     current_node = path_final[goal][i];
   }
   //Add something here if you want Sparki to do something once it has reached its goal
-
-   
 }
+
+/*
+void createCost() {
+    int x = 4;
+    int y = 4;
+    int n = x*y;
+    int map[4][4] = {{1, 1, 1, 1}, {1, 1, 1, 1}, {1, 1, 1, 1}, {1, 1, 1, 1}};
+    //int cost[16][16] = {0};
+    for (int i = 0; i < x; i++) {
+        for (int j = 0; j < y; j++) {
+            // Right neighbors
+            if (i < x-1) {
+                if (map[i][j] && map[i+1][j]) {
+                    adjacency_mat[(x*j)+i+1][(x*j)+i] = 1;
+                }
+            }
+
+            // Left neighbors
+            if (i > 0) {
+                if (map[i][j] && map[i-1][j]) {
+                    adjacency_mat[(x*j)+i-1][(x*j)+i] = 1;
+                }
+            }
+
+
+            // Up neighbors
+            if (j > 0) {
+                if (map[i][j] && map[i][j-1]) {
+                    adjacency_mat[(x*j)+i-x][(x*j)+i] = 1;
+                }
+            }
+
+            // Down neighbors
+            if (j < y-1) {
+                if (map[i][j] && map[i][j+1]) {
+                    adjacency_mat[(x*j)+i+x][(x*j)+i] = 1;
+                }
+            }
+        }
+    }
+}
+*/
 
 void setup() {
   // put your setup code here, to run once:
@@ -173,12 +216,15 @@ void setup() {
   }
   */
 
+  //graph set up
+  //createCost();
+
   // Adjacency Matrix
   // 0 -> not connected
   // 1 -> its a neighbor node
   // 100 -> an obstacle you want to go around/avoid
-
   // The orientation of this adjacency matrix must correspond with how you labeled the nodes in your movement calculations
+  /*
   int graph[V][V] = {{0, 1, 0, 100, 0, 0, 0, 0, 0},
                      {1, 0, 1, 0, 100, 0, 0, 0, 0},
                      {0, 1, 0, 0, 0, 1, 0, 0, 0},
@@ -189,10 +235,73 @@ void setup() {
                      {0, 0, 0, 0, 100, 0, 1, 0, 1},
                      {0, 0, 0, 0, 0, 1, 0, 1, 0}
     };
+    */
+
+    int graph[V][V] = {{
+
+0,  1,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},  
+
+{1,  0,  1,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},  
+
+{0,  1,  0,  1,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0},  
+
+{0,  0,  1,  0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0},  
+
+{1,  0,  0,  0,  0,  1,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0},  
+
+{0,  1,  0,  0,  1,  0,  1,  0,  0,  1,  0,  0,  0,  0,  0,  0},  
+
+{0,  0,  1,  0,  0,  1,  0,  1,  0,  0,  1,  0,  0,  0,  0,  0},  
+
+{0,  0,  0,  1,  0,  0,  1,  0,  0,  0,  0,  1,  0,  0,  0,  0},  
+
+{0,  0,  0,  0,  1,  0,  0,  0,  0,  1,  0,  0,  1,  0,  0,  0},  
+
+{0,  0,  0,  0,  0,  1,  0,  0,  1,  0,  1,  0,  0,  1,  0,  0},  
+
+{0,  0,  0,  0,  0,  0,  1,  0,  0,  1,  0,  1,  0,  0,  1,  0},  
+
+{0,  0,  0,  0,  0,  0,  0,  1,  0,  0,  1,  0,  0,  0,  0,  1},  
+
+{0,  0,  0,  0,  0,  0,  0,  0,  1,  0,  0,  0,  0,  1,  0,  0},  
+
+{0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  0,  0,  1,  0,  1,  0},  
+
+{0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  0,  0,  1,  0,  1},  
+
+{0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  0,  0,  1,  0}
+
+      
+    };
+
+    for (int i = 0; i < 16; i++) {
+    if (graph[i][4] == 1) {
+      graph[i][4] = 99;
+    }
+    if (graph[i][5] == 1) {
+      graph[i][5] = 99;
+    }
+    if (graph[i][3] == 1) {
+      graph[i][3] = 99;
+    }
+    if (graph[i][7] == 1) {
+      graph[i][7] = 99;
+    }
+    if (graph[i][12] == 1) {
+      graph[i][12] = 99;
+    }
+    if (graph[i][14] == 1) {
+      graph[i][14] = 99;
+    }
+    else {
+      continue;
+    } 
+  }
     // Calculate the shortest paths and store them
     dijkstra(graph, 0);
+
     // Move sparki based on those paths and given a "goal" node
-    move_sparki(6);
+    move_sparki(13);
 
 }
 
